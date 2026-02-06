@@ -12,16 +12,11 @@
 
   headers.forEach((header) => {
     // 修正重點：移除標題文字中所有的空白與換行後再進行比對
-    // 原始 HTML 是 "勤 務 輪 流 順 序..."，直接比對會失敗
     const cleanText = header.innerText.replace(/\s+/g, "");
 
     if (cleanText.includes("勤務輪流順序與服勤人員對照表")) {
       console.log("已找到對照表標題，正在解析...");
 
-      // 向上找到包含這個標題的表格區塊
-      // h5 -> td -> tr -> tbody -> table -> td -> tr -> tbody -> table (結構較深，我們找最近的 table 容器)
-      // 根據 HTML 結構，標題被包在一個 table 裡，而資料在同一個大 table 的後續 row
-      // 我們直接找這個 header 所在的 table
       const table = header.closest("table");
 
       if (table) {
@@ -29,14 +24,12 @@
 
         rows.forEach((row) => {
           const cells = row.querySelectorAll("td");
-          // 遍歷該列的所有儲存格
           for (let i = 0; i < cells.length - 1; i++) {
             const currentText = cells[i].innerText.trim();
-            // 嘗試抓取下一格，有些名字有 colspan，但 innerText 抓取不受影響
             const nextText = cells[i + 1] ? cells[i + 1].innerText.trim() : "";
 
-            // 邏輯：如果當前格是「純數字」，且下一格有文字，視為 ID -> Name
-            if (/^\d+$/.test(currentText) && nextText !== "") {
+            // 修正 1：支援義消編號 (例如：義22) 或純數字編號
+            if (/^(義?\d+)$/.test(currentText) && nextText !== "") {
               idToNameMap[currentText] = nextText;
             }
           }
@@ -48,8 +41,6 @@
 
   if (!mapSectionFound || Object.keys(idToNameMap).length === 0) {
     console.log("錯誤：找不到對照表或無法解析名單。");
-    // 嘗試備用方案：直接搜尋特定特徵的表格 (針對該系統結構)
-    // 如果標題抓取失敗，我們嘗試抓取含有 "1" 和 "詹博鈞" 這種結構的表格 (寫死測試)
     return;
   }
 
@@ -57,6 +48,19 @@
     "已建立人員名單 (筆數: " + Object.keys(idToNameMap).length + "):",
     idToNameMap,
   );
+
+  const nameSpanStyle = `
+    display: inline-block;
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    padding: 2px 5px;
+    margin: 2px;
+    border-radius: 4px;
+    font-size: 0.95em;
+    font-weight: bold;
+    border: 1px solid #bbdefb;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  `;
 
   // 2. 替換勤務表中的數字
   // 勤務表的格子特徵是 class="p-1"
@@ -66,41 +70,60 @@
     const originalText = cell.innerText.trim();
     if (!originalText) return;
 
-    // 使用正則表達式分割，支援逗號、頓號、空格
-    // 原始資料範例: "2,19,24,25,29"
-    const ids = originalText.split(/[,，、\s]+/);
+    // 使用正則表達式分割，保留分隔符號 (逗號、頓號、空格、換行)
+    const tokens = originalText.split(/([,，、\s\n\r]+)/);
 
-    // 檢查這一格裡面是否包含我們名單上的 ID
-    const hasKnownId = ids.some((id) => idToNameMap[id.trim()]);
-    if (!hasKnownId) return;
-
-    // 建立新的 HTML
-    const newHtml = ids
-      .map((id) => {
-        const cleanId = id.trim();
-        if (idToNameMap[cleanId]) {
-          // 找到名字，產生藍色標籤
-          return `<span style="
-                    display: inline-block;
-                    background-color: #e3f2fd;
-                    color: #0d47a1;
-                    padding: 2px 5px;
-                    margin: 2px;
-                    border-radius: 4px;
-                    font-size: 0.95em;
-                    font-weight: bold;
-                    border: 1px solid #bbdefb;
-                    box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-                ">${idToNameMap[cleanId]}</span>`; // 如果需要顯示號碼可改為: ${cleanId}.${idToNameMap[cleanId]}
-        } else {
-          // 找不到名字 (可能是空字串或符號)，保持原樣
-          return cleanId ? `<span style="margin:2px;">${cleanId}</span>` : "";
+    let changed = false;
+    const newHtml = tokens
+      .map((token) => {
+        const cleanToken = token.trim();
+        if (idToNameMap[cleanToken]) {
+          changed = true;
+          return `<span style="${nameSpanStyle}">${idToNameMap[cleanToken]}</span>`;
         }
+        return token; // 保持原樣 (包含分隔符號)
       })
       .join("");
 
-    cell.innerHTML = newHtml;
+    if (changed) {
+      cell.innerHTML = newHtml;
+    }
   });
+
+  // 3. 修正 2：替換備註欄裡的行程冒號後的番號
+  const tdList = document.querySelectorAll("td");
+  let remarksCell = null;
+  for (let i = 0; i < tdList.length; i++) {
+    // 尋找內容為「備註」的單元格
+    if (tdList[i].innerText.trim() === "備註") {
+      remarksCell = tdList[i].nextElementSibling;
+      break;
+    }
+  }
+
+  if (remarksCell) {
+    console.log("正在處理備註欄...");
+    let html = remarksCell.innerHTML;
+
+    // 匹配冒號後的內容，直到遇到不屬於 ID 或分隔符號的字元 (例如 <br> 的 <)
+    // 容許範圍：數字、義、逗號、空格、頓號、換行
+    const afterColonRegex = /:([\s,，、義\d\n\r]+)/g;
+
+    html = html.replace(afterColonRegex, (match, p1) => {
+      // p1 是冒號後的 ID 原始字串
+      const tokens = p1.split(/([,，、\s\n\r]+)/);
+      const replacedTokens = tokens.map((token) => {
+        const cleanToken = token.trim();
+        if (idToNameMap[cleanToken]) {
+          return `<span style="${nameSpanStyle}">${idToNameMap[cleanToken]}</span>`;
+        }
+        return token;
+      });
+      return ":" + replacedTokens.join("");
+    });
+
+    remarksCell.innerHTML = html;
+  }
 
   console.log("替換完成！");
 })();
