@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  console.log("消防勤務易讀小幫手 (修正版) 啟動中...");
+  console.log("消防勤務易讀小幫手啟動中...");
 
   // 1. 建立代號與姓名的對照表
   const idToNameMap = {};
