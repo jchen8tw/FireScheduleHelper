@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      padding: 10px;
+      font-family: Arial, sans-serif;
+      min-width: 400px;
+      background-color: #f8f9fa;
+    }
+
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 16px;
+    }
+
+    .tab button:hover {
+      background-color: #ddd;
+    }
+
+    .tab button.active {
+      background-color: #fff;
+      border-bottom: 2px solid #007bff;
+    }
+
+    .tabcontent {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-top: none;
+      background-color: #fff;
+      border-radius: 0 0 5px 5px;
+      min-height: 300px;
+    }
+
+    .setting-item {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      width: 100%;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .btn-green {
+      background-color: #28a745;
+    }
+
+    .btn-blue {
+      background-color: #17a2b8;
+    }
+
+    .btn-green:hover {
+      background-color: #218838;
+    }
+
+    .btn-blue:hover {
+      background-color: #138496;
+    }
+
+    .summary-group {
+      margin-bottom: 12px;
+    }
+
+    .summary-group h4 {
+      margin: 0 0 4px 0;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .summary-items {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .summary-items .role {
+      color: #888;
+      font-size: 12px;
+    }
+
+    .summary-items .name {
+      font-weight: bold;
+    }
+
+    .empty-msg {
+      color: #999;
+      font-style: italic;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tab">
+    <button class="tablinks" data-tab="CombatGroup" id="defaultOpen">作戰編組</button>
+    <button class="tablinks" data-tab="DutySchedule">勤務表設定</button>
+  </div>
+
+  <!-- Tab 1: Combat Group (Read-Only Summary) -->
+  <div id="CombatGroup" class="tabcontent">
+    <div class="setting-item">
+      <button id="readScheduleBtn" class="btn btn-green">📄 讀取最新勤務表</button>
+      <div style="font-size: 12px; color: #666; margin-top: 5px;">提醒：讀取新的勤務表時，將會清空目前所有的作戰編組設定。請確保您已開啟過當日的勤務表網頁。</div>
+    </div>
+    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+    <button id="quickFillBtn" class="btn btn-green">⚡ 快速填入</button>
+    <button id="editCombatGroupBtn" class="btn btn-blue">✏️ 編輯作戰編組</button>
+    <hr>
+    <div id="combatGroupSummary">
+      <div class="empty-msg">尚無作戰編組資料</div>
+    </div>
+  </div>
+
+  <!-- Tab 2: Duty Schedule -->
+  <div id="DutySchedule" class="tabcontent">
+    <h3>勤務表設定</h3>
+    <div class="setting-item">
+      <label><input type="checkbox" id="enableReplace"> 啟用勤務表番號自動替換人名功能</label>
+    </div>
+    <button id="save" class="btn btn-blue">儲存設定</button>
+    <div id="status" style="margin-top: 10px; color: green;"></div>
+  </div>
+
+
+
+  <script src="options.js"></script>
+</body>
+
+</html>

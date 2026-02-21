@@ -1,13 +1,25 @@
 {
   "manifest_version": 3,
-  "name": "消防勤務表易讀小幫手",
+  "name": "消防值班小幫手",
   "version": "1.0",
-  "description": "自動將勤務編組表中的番號替換為對應的隊員姓名",
+  "description": "自動將勤務編組表中的番號替換為對應的隊員姓名以及更直覺的更新作戰編組",
   "content_scripts": [
     {
       "matches": ["*://ourap.tfd.gov.tw/*", "file:///*"],
       "js": ["content.js"],
       "run_at": "document_idle"
     }
-  ]
+  ],
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+  "action": {
+    "default_popup": "options.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  }
 }
