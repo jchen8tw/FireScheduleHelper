@@ -93,12 +93,6 @@
             input.dispatchEvent(new Event('change', { bubbles: true }));
         });
 
-        // ── Clear Radio IDs ──
-        const radioSelects = document.querySelectorAll('select[multiple][name^="radio_pttid"]');
-        radioSelects.forEach(select => {
-            Array.from(select.options).forEach(opt => opt.selected = false);
-            select.dispatchEvent(new Event('change', { bubbles: true }));
-        });
 
         // ── Reset all single-select dropdowns to first option ("請選擇"), except "單位" ──
         document.querySelectorAll('select:not([multiple])').forEach(select => {
@@ -189,6 +183,13 @@
                     }
                 }
             }
+        });
+
+        // ── Clear Radio IDs ──
+        const radioSelects = document.querySelectorAll('select[multiple][name^="radio_pttid"]');
+        radioSelects.forEach(select => {
+            Array.from(select.options).forEach(opt => opt.selected = false);
+            select.dispatchEvent(new Event('change', { bubbles: true }));
         });
 
         // ── Remarks ──
