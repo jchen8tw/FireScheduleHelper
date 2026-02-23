@@ -100,8 +100,12 @@
             select.dispatchEvent(new Event('change', { bubbles: true }));
         });
 
-        // ── Reset all single-select dropdowns to first option ("請選擇") ──
+        // ── Reset all single-select dropdowns to first option ("請選擇"), except "單位" ──
         document.querySelectorAll('select:not([multiple])').forEach(select => {
+            // Skip the "單位" (unit/station) dropdown
+            const parent = select.parentElement;
+            if (parent && parent.innerText.includes('單位')) return;
+
             select.selectedIndex = 0;
             select.dispatchEvent(new Event('change', { bubbles: true }));
         });
