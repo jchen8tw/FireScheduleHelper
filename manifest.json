@@ -6,7 +6,7 @@
   "content_scripts": [
     {
       "matches": ["*://ourap.tfd.gov.tw/*", "file:///*"],
-      "js": ["content.js"],
+      "js": ["content_scripts/content.js"],
       "run_at": "document_idle"
     }
   ],
@@ -16,10 +16,10 @@
     "activeTab"
   ],
   "action": {
-    "default_popup": "options.html"
+    "default_popup": "options/options.html"
   },
   "options_ui": {
-    "page": "options.html",
+    "page": "options/options.html",
     "open_in_tab": false
   }
 }

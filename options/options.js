@@ -132,7 +132,7 @@ function handleQuickFill() {
             if (!tabs[0]) return;
             // Get notes from storage too
             chrome.storage.sync.get(['combatNotes'], (nr) => {
-                chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, files: ['quick_fill.js'] }, () => {
+                chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, files: ['content_scripts/quick_fill.js'] }, () => {
                     chrome.tabs.sendMessage(tabs[0].id, {
                         action: "quickFill",
                         data: assignments,
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Combat Group buttons
     document.getElementById('quickFillBtn').addEventListener('click', handleQuickFill);
     document.getElementById('editCombatGroupBtn').addEventListener('click', () => {
-        const editorUrl = chrome.runtime.getURL('editor.html');
+        const editorUrl = chrome.runtime.getURL('editor/editor.html');
         chrome.tabs.query({ url: editorUrl }, (tabs) => {
             if (tabs.length > 0) {
                 chrome.tabs.update(tabs[0].id, { active: true });
