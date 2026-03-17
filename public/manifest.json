@@ -16,10 +16,10 @@
     "activeTab"
   ],
   "action": {
-    "default_popup": "options/options.html"
+    "default_popup": "options.html"
   },
   "options_ui": {
-    "page": "options/options.html",
+    "page": "options.html",
     "open_in_tab": false
   }
 }

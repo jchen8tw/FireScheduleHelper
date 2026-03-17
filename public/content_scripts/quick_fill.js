@@ -182,6 +182,21 @@
                                     radioNoInput.dispatchEvent(new Event('input', { bubbles: true }));
                                     radioNoInput.dispatchEvent(new Event('change', { bubbles: true }));
                                 }
+
+                                // 帶隊官無線電點選邏輯：番號為 1 (主管) 則點 1, 2，否則為小隊長 點 3, 4
+                                const radioPttSelect = row.querySelector('select[multiple][name^="radio_pttid"]');
+                                if (radioPttSelect) {
+                                    const leaderNo = assignments[key].no || assignments[key].id;
+                                    const options = radioPttSelect.options;
+                                    if (String(leaderNo) === '1') {
+                                        if (options.length >= 1) options[0].selected = true;
+                                        if (options.length >= 2) options[1].selected = true;
+                                    } else {
+                                        if (options.length >= 3) options[2].selected = true;
+                                        if (options.length >= 4) options[3].selected = true;
+                                    }
+                                    radioPttSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                                }
                             }
                         }
                         filledKeys.add(key);
