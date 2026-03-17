@@ -175,7 +175,7 @@ export default function App() {
                   讀取最新勤務表
                 </Button>
                 <div className="text-[13px] text-muted-foreground leading-snug">
-                  提醒：讀取新的勤務表時，將會清空目前所有的作戰編組設定。請確保您已開啟過當日的勤務表網頁。
+                  提醒：讀取新的勤務表時，將會清空目前所有的作戰編組設定。請確保您已開啟過當日的勤務表網頁。
                 </div>
               </div>
 
