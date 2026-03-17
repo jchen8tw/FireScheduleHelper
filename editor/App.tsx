@@ -15,6 +15,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
   rectSortingStrategy,
+  arrayMove,
 } from '@dnd-kit/sortable';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -101,16 +102,14 @@ function SortableSlot({ slot, onRemoveOccupant }: { slot: SlotData, onRemoveOccu
   return (
     <div
       ref={setNodeRef}
-      style={style}
       className={cn(
         "relative min-w-[120px] min-h-[56px] border-2 border-dashed rounded-md flex flex-col items-center justify-center p-2 bg-muted/30 transition-all",
-        isOver && !slot.occupant && "border-primary bg-primary/5 scale-[1.02]",
-        isDragging && "opacity-50 border-muted-foreground/30"
+        isOver && !slot.occupant && "border-primary bg-primary/5 scale-[1.02]"
       )}
     >
       <span className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground mb-1.5 select-none">{slot.label}</span>
       {slot.occupant && (
-        <div {...attributes} {...listeners} className="relative z-10">
+        <div style={style} {...attributes} {...listeners} className="relative z-10">
           <PersonBadge occupant={slot.occupant} onRemove={() => onRemoveOccupant(slot.id)} />
         </div>
       )}
@@ -340,17 +339,18 @@ export default function EditorApp() {
     setActiveDragItem(null);
 
     const activeId = active.id.toString();
+    const overId = over?.id.toString() || '';
 
-    // 1. Drag-to-remove: If dropped outside or onto the sidebar
-    if (!over || over.id === 'sidebar-droppable') {
+    // 1. Drag-to-remove: If dropped outside, onto the sidebar background, or over a person in the list
+    const isOverSidebar = overId === 'sidebar-droppable' || overId.startsWith('person-');
+    
+    if (!over || isOverSidebar) {
       if (activeId.startsWith('slot-')) {
         const activeSlotId = activeId.replace('slot-', '');
         removeOccupant(activeSlotId);
       }
       return;
     }
-
-    const overId = over.id.toString();
 
     // 2. Dragging person from sidebar
     if (activeId.startsWith('person-')) {
@@ -408,6 +408,24 @@ export default function EditorApp() {
         const overSlotId = overId.replace('slot-', '');
 
         setSlots(prev => {
+          const activeSlot = prev[activeSlotId];
+          const overSlot = prev[overSlotId];
+
+          // If both are dynamic and in the same group, reorder instead of swapping contents
+          // This prevents the "double swap" animation flicker because dnd-kit sees the IDs moving
+          if (activeSlot?.isDynamic && overSlot?.isDynamic && activeSlot.group === overSlot.group) {
+            const keys = Object.keys(prev);
+            const oldIndex = keys.indexOf(activeSlotId);
+            const newIndex = keys.indexOf(overSlotId);
+            const newKeys = arrayMove(keys, oldIndex, newIndex);
+            
+            const newSlots: Record<string, SlotData> = {};
+            newKeys.forEach(key => {
+              newSlots[key] = prev[key];
+            });
+            return newSlots;
+          }
+
           const newSlots = { ...prev };
           const tempOccupant = newSlots[overSlotId]?.occupant;
           if (newSlots[overSlotId]) newSlots[overSlotId] = { ...newSlots[overSlotId], occupant: newSlots[activeSlotId].occupant };
