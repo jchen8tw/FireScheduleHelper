@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "消防值班小幫手",
-  "version": "1.0",
+  "version": "0.0.1",
   "description": "自動將勤務編組表中的番號替換為對應的隊員姓名以及更直覺的更新作戰編組",
   "content_scripts": [
     {
