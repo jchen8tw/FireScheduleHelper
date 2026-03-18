@@ -200,6 +200,7 @@ export default function EditorApp() {
 
   // State for slots mapping role_id -> SlotData
   const [slots, setSlots] = useState<Record<string, SlotData>>({});
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // State for dynamic groups
   const [dynamicGroups, setDynamicGroups] = useState<{id: string, title: string, prefix: string}[]>([
@@ -264,15 +265,10 @@ export default function EditorApp() {
         }
 
         setSlots(initialSlots);
+        setIsLoaded(true);
       });
     });
   }, []);
-
-  // Save to Extension Storage
-  useEffect(() => {
-    // Debounce or just save directly since this isn't typed often
-    saveToStorage();
-  }, [slots, dynamicGroups]);
 
   const saveToStorage = useCallback(() => {
     const cg: Record<string, { id: string, name: string }> = {};
@@ -321,6 +317,14 @@ export default function EditorApp() {
       combatNotes: notesArr.join('\n')
     });
   }, [slots, dynamicGroups]);
+
+  // Save to Extension Storage
+  useEffect(() => {
+    if (isLoaded) {
+      // Debounce or just save directly since this isn't typed often
+      saveToStorage();
+    }
+  }, [slots, dynamicGroups, isLoaded, saveToStorage]);
 
   // DND Handlers
   const sensors = useSensors(
