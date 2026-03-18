@@ -85,20 +85,6 @@
 
         const errors = [];
 
-        // ── Clear Call Signs (呼號) ──
-        const radioNos = document.querySelectorAll('input[name="radio_no[]"]');
-        radioNos.forEach(input => {
-            input.value = '';
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-            input.dispatchEvent(new Event('change', { bubbles: true }));
-        });
-
-        // ── Clear Radio IDs ──
-        const radioSelects = document.querySelectorAll('select[multiple][name^="radio_pttid"]');
-        radioSelects.forEach(select => {
-            Array.from(select.options).forEach(opt => opt.selected = false);
-            select.dispatchEvent(new Event('change', { bubbles: true }));
-        });
 
         // ── Reset all single-select dropdowns to first option ("請選擇"), except "單位" ──
         document.querySelectorAll('select:not([multiple])').forEach(select => {
@@ -140,6 +126,21 @@
             const userSelect = row.querySelector('select[name="user_id_a[]"]');
             if (!userSelect) return;
 
+            // 取得無線電欄位以便後續操作
+            const radioNoInput = row.querySelector('input[name="radio_no[]"]');
+            const radioPttSelect = row.querySelector('select[multiple][name^="radio_pttid"]');
+
+            // 每列處理開始前先清空無線電與呼號
+            if (radioNoInput) {
+                radioNoInput.value = '';
+                radioNoInput.dispatchEvent(new Event('input', { bubbles: true }));
+                radioNoInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            if (radioPttSelect) {
+                Array.from(radioPttSelect.options).forEach(opt => opt.selected = false);
+                radioPttSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
             // Find role and attribute text: it's in one of the sibling tds
             const tds = row.querySelectorAll('td');
             let rowText = '';
@@ -175,17 +176,18 @@
                         if (!selectOption(userSelect, assignments[key])) {
                             errors.push(`${mapping.attr} ${mapping.role}: 找不到 ${assignments[key].name}`);
                         } else {
+                            // 選完人名後再次處理無線電 (因為 selectOption 可能會自動帶入)
                             if (mapping.role === '帶隊官') {
-                                const radioNoInput = row.querySelector('input[name="radio_no[]"]');
                                 if (radioNoInput) {
                                     radioNoInput.value = '02';
                                     radioNoInput.dispatchEvent(new Event('input', { bubbles: true }));
                                     radioNoInput.dispatchEvent(new Event('change', { bubbles: true }));
                                 }
 
-                                // 帶隊官無線電點選邏輯：番號為 1 (主管) 則點 1, 2，否則為小隊長 點 3, 4
-                                const radioPttSelect = row.querySelector('select[multiple][name^="radio_pttid"]');
                                 if (radioPttSelect) {
+                                    // 先清空自動帶入的內容
+                                    Array.from(radioPttSelect.options).forEach(opt => opt.selected = false);
+                                    
                                     const leaderNo = assignments[key].no || assignments[key].id;
                                     const options = radioPttSelect.options;
                                     if (String(leaderNo) === '1') {
@@ -195,6 +197,17 @@
                                         if (options.length >= 3) options[2].selected = true;
                                         if (options.length >= 4) options[3].selected = true;
                                     }
+                                    radioPttSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                                }
+                            } else {
+                                // 非帶隊官：選完人名後強制清空無線電 ID 與呼號 (防止系統自動帶入)
+                                if (radioNoInput) {
+                                    radioNoInput.value = '';
+                                    radioNoInput.dispatchEvent(new Event('input', { bubbles: true }));
+                                    radioNoInput.dispatchEvent(new Event('change', { bubbles: true }));
+                                }
+                                if (radioPttSelect) {
+                                    Array.from(radioPttSelect.options).forEach(opt => opt.selected = false);
                                     radioPttSelect.dispatchEvent(new Event('change', { bubbles: true }));
                                 }
                             }
