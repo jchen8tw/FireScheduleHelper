@@ -4,14 +4,52 @@
   console.log("消防勤務易讀小幫手啟動中...");
 
   chrome.storage.sync.get(
-    { enableReplace: true },
+    { enableReplace: true, enableRemoveDutyAlert: false },
     (items) => {
+      // 1. 去除新值班系統彈窗警示功能
+      if (items.enableRemoveDutyAlert) {
+        const removeDutyAlerts = () => {
+          const m = document.getElementById('dutyAlertsModal');
+          if (m) m.remove();
+          document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+          if (document.body.classList.contains('modal-open')) {
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = 'auto';
+            document.body.style.paddingRight = '';
+          }
+
+          // 透過 injection 執行在頁面環境中以存取 window 變數
+          const script = document.createElement('script');
+          script.textContent = `
+            if (window.dutyAlertsChecker) {
+              if (typeof window.dutyAlertsChecker.stopChecking === 'function') {
+                window.dutyAlertsChecker.stopChecking();
+              }
+              window.dutyAlertsChecker.showAlertsDialog = function() {
+                console.log('消防勤務易讀小幫手：彈窗已被攔截');
+              };
+            }
+          `;
+          (document.head || document.documentElement).appendChild(script);
+          script.remove();
+        };
+
+        // 立即執行一次，並在接下來的 5 秒內每秒檢查一次（應對延遲載入）
+        removeDutyAlerts();
+        let checks = 0;
+        const interval = setInterval(() => {
+          removeDutyAlerts();
+          checks++;
+          if (checks > 5) clearInterval(interval);
+        }, 1000);
+      }
+
       if (!items.enableReplace) {
-        console.log("消防勤務易讀小幫手已停用。");
+        console.log("消防勤務易讀小幫手：人名替換功能已停用。");
         return;
       }
 
-      // 1. 建立代號與姓名的對照表
+      // 2. 建立代號與姓名的對照表
       const idToNameMap = {};
       let mapSectionFound = false;
 
@@ -100,7 +138,7 @@
     box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
   `;
 
-      // 2. 替換勤務表中的數字
+      // 3. 替換勤務表中的數字
       // 勤務表的格子特徵是 class="p-1"
       const dutyCells = document.querySelectorAll("td.p-1");
 
@@ -128,7 +166,7 @@
         }
       });
 
-      // 3. 修正 2：替換備註欄裡的行程冒號後的番號
+      // 4. 修正 2：替換備註欄裡的行程冒號後的番號
       const tdList = document.querySelectorAll("td");
       let remarksCell = null;
       for (let i = 0; i < tdList.length; i++) {
@@ -163,7 +201,7 @@
         remarksCell.innerHTML = html;
       }
 
-      // 4. 替換摘要區 (請假、補休、勤務排除等) 的番號
+      // 5. 替換摘要區 (請假、補休、勤務排除等) 的番號
       const summaryLabels = [
         "請假",
         "補休",

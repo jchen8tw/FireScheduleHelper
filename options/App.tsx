@@ -8,12 +8,14 @@ import { FileText, Zap, Pencil } from 'lucide-react';
 
 export default function App() {
   const [enableReplace, setEnableReplace] = useState<boolean>(true);
+  const [enableRemoveDutyAlert, setEnableRemoveDutyAlert] = useState<boolean>(false);
   const [combatGroup, setCombatGroup] = useState<Record<string, any>>({});
   const [customGroups, setCustomGroups] = useState<any[]>([]);
 
   useEffect(() => {
-    chrome.storage?.sync?.get(['enableReplace', 'combatGroup', 'customGroups'], (items) => {
+    chrome.storage?.sync?.get(['enableReplace', 'enableRemoveDutyAlert', 'combatGroup', 'customGroups'], (items) => {
       if (items.enableReplace !== undefined) setEnableReplace(Boolean(items.enableReplace));
+      if (items.enableRemoveDutyAlert !== undefined) setEnableRemoveDutyAlert(Boolean(items.enableRemoveDutyAlert));
       if (items.combatGroup) setCombatGroup(items.combatGroup as Record<string, any>);
       if (items.customGroups) setCustomGroups(items.customGroups as any[]);
     });
@@ -22,6 +24,11 @@ export default function App() {
   const saveOptions = (checked: boolean) => {
     setEnableReplace(checked);
     chrome.storage?.sync?.set({ enableReplace: checked });
+  };
+
+  const saveRemoveDutyAlert = (checked: boolean) => {
+    setEnableRemoveDutyAlert(checked);
+    chrome.storage?.sync?.set({ enableRemoveDutyAlert: checked });
   };
 
   const handleReadSchedule = () => {
@@ -163,7 +170,7 @@ export default function App() {
       <Tabs defaultValue="CombatGroup" className="w-full">
         <TabsList className="w-full grid grid-cols-2 h-10 mb-4">
           <TabsTrigger value="CombatGroup">作戰編組</TabsTrigger>
-          <TabsTrigger value="DutySchedule">勤務表設定</TabsTrigger>
+          <TabsTrigger value="DutySchedule">設定</TabsTrigger>
         </TabsList>
 
         <TabsContent value="CombatGroup" className="flex flex-col gap-4">
@@ -207,6 +214,12 @@ export default function App() {
                 <Switch id="enableReplace" checked={enableReplace} onCheckedChange={saveOptions} />
                 <Label htmlFor="enableReplace" className="text-sm font-medium leading-none">
                   啟用勤務表番號自動替換人名功能
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Switch id="enableRemoveDutyAlert" checked={enableRemoveDutyAlert} onCheckedChange={saveRemoveDutyAlert} />
+                <Label htmlFor="enableRemoveDutyAlert" className="text-sm font-medium leading-none">
+                  去除新值班系統彈窗警示功能
                 </Label>
               </div>
             </CardContent>
