@@ -254,7 +254,8 @@ export default function EditorApp() {
               initialSlots[role].occupant = { id: data.id, name: data.name };
             } else {
               // It's a dynamic slot that was saved
-              const prefix = role.split('_')[0];
+              const lastUnderscore = role.lastIndexOf('_');
+              const prefix = lastUnderscore !== -1 ? role.substring(0, lastUnderscore) : role;
               const groupMap: Record<string, string> = { rest: 'restGroup', water: 'waterGroup' };
               const groupId = groupMap[prefix] || customDyn.find(g => g.id === prefix)?.id;
               if (groupId) {
@@ -281,7 +282,8 @@ export default function EditorApp() {
       }
 
       if (s.isDynamic) {
-        const prefix = s.role.split('_')[0];
+        const lastUnderscore = s.role.lastIndexOf('_');
+        const prefix = lastUnderscore !== -1 ? s.role.substring(0, lastUnderscore) : s.role;
         if (prefix === 'rest') counts.rest++;
         else if (prefix === 'water') counts.water++;
         else counts.custom[prefix] = (counts.custom[prefix] || 0) + 1;

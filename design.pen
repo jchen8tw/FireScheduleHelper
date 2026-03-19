@@ -1,5 +1,5 @@
 {
-  "version": "2.8",
+  "version": "2.9",
   "children": [
     {
       "type": "frame",
@@ -1341,6 +1341,8 @@
                     {
                       "type": "text",
                       "id": "vIMKE",
+                      "x": 0,
+                      "y": 0,
                       "name": "0",
                       "enabled": false,
                       "fill": "$--foreground",
@@ -1372,6 +1374,8 @@
                     {
                       "type": "text",
                       "id": "qM9xF",
+                      "x": 0,
+                      "y": 0,
                       "name": "0",
                       "enabled": false,
                       "fill": "$--foreground",
@@ -1409,6 +1413,8 @@
                     {
                       "type": "text",
                       "id": "dL6MK",
+                      "x": 0,
+                      "y": 0,
                       "name": "0",
                       "enabled": false,
                       "fill": "$--foreground",
@@ -1478,6 +1484,8 @@
                     {
                       "type": "text",
                       "id": "Hlbwf",
+                      "x": 0,
+                      "y": 0,
                       "name": "0",
                       "enabled": false,
                       "fill": "$--foreground",
@@ -1509,6 +1517,8 @@
                     {
                       "type": "text",
                       "id": "MBOXD",
+                      "x": 0,
+                      "y": 0,
                       "name": "0",
                       "enabled": false,
                       "fill": "$--foreground",
@@ -1546,6 +1556,8 @@
                     {
                       "type": "text",
                       "id": "iEjWl",
+                      "x": 0,
+                      "y": 0,
                       "name": "0",
                       "enabled": false,
                       "fill": "$--foreground",
@@ -2136,7 +2148,11 @@
               ]
             },
             "h6oCR": {
-              "enabled": false
+              "enabled": false,
+              "height": "fit_content"
+            },
+            "IaDRg": {
+              "width": "fill_container"
             }
           }
         },
@@ -3465,7 +3481,11 @@
           "height": "fit_content",
           "descendants": {
             "QRy7x": {
-              "enabled": false
+              "enabled": false,
+              "height": "fit_content"
+            },
+            "BX0XX": {
+              "width": "fill_container"
             },
             "i0Z3E": {
               "width": "fill_container",
@@ -3488,7 +3508,11 @@
           "height": "fit_content",
           "descendants": {
             "QRy7x": {
-              "enabled": false
+              "enabled": false,
+              "height": "fit_content"
+            },
+            "BX0XX": {
+              "width": "fill_container"
             },
             "i0Z3E": {
               "width": "fill_container",
@@ -3864,7 +3888,7 @@
                   "type": "ref",
                   "ref": "C3KOZ",
                   "x": 24,
-                  "y": 24.019943701668048,
+                  "y": 24.01994370166805,
                   "width": "fill_container",
                   "height": "fit_content",
                   "descendants": {
@@ -3942,7 +3966,7 @@
             "L6Ngo": {
               "width": "fill_container",
               "height": "fit_content",
-              "y": 24.019943701668048
+              "y": 24.01994370166805
             },
             "L6Ngo/RO4Ll": {
               "x": 39,
@@ -4022,7 +4046,7 @@
             "L6Ngo": {
               "width": "fill_container",
               "height": "fit_content",
-              "y": 24.019943701668048
+              "y": 24.01994370166805
             },
             "L6Ngo/RO4Ll": {
               "x": 39,
@@ -4664,6 +4688,12 @@
               "y": 0,
               "height": "fit_content",
               "descendants": {
+                "QRy7x": {
+                  "height": "fit_content"
+                },
+                "BX0XX": {
+                  "width": "fill_container"
+                },
                 "i0Z3E": {
                   "width": "fill_container",
                   "height": "fit_content"
@@ -4895,9 +4925,11 @@
                     {
                       "type": "frame",
                       "id": "sdtLabel1",
+                      "x": 0,
+                      "y": 0,
                       "name": "Label Text",
                       "enabled": false,
-                      "width": "fill_container",
+                      "width": "fill_container(0)",
                       "fill": {
                         "type": "color",
                         "color": "$--white",
@@ -5044,7 +5076,7 @@
       "id": "BX192",
       "x": -1087,
       "y": 564,
-      "name": "Editor Page",
+      "name": "Taskforce Editor Page",
       "width": 1024,
       "height": 768,
       "fill": "$--background",
@@ -5158,8 +5190,9 @@
                       "height": "fit_content",
                       "descendants": {
                         "QRy7x": {
-                          "width": "fill_container",
-                          "enabled": false
+                          "width": "fill_container(0)",
+                          "enabled": false,
+                          "height": "fit_content"
                         },
                         "BX0XX": {
                           "width": "fill_container"
@@ -5805,7 +5838,8 @@
                             },
                             "8tnXG": {
                               "content": "1. 王大明",
-                              "x": 16
+                              "x": 16,
+                              "y": 8
                             }
                           }
                         },
@@ -5824,7 +5858,8 @@
                             },
                             "8tnXG": {
                               "content": "4. 李四",
-                              "x": 16
+                              "x": 16,
+                              "y": 8
                             }
                           }
                         },
@@ -5843,7 +5878,8 @@
                             },
                             "8tnXG": {
                               "content": "7. 陳小華",
-                              "x": 16
+                              "x": 16,
+                              "y": 8
                             }
                           }
                         },
@@ -5862,7 +5898,8 @@
                             },
                             "8tnXG": {
                               "content": "10. 劉大華",
-                              "x": 16
+                              "x": 16,
+                              "y": 8
                             }
                           }
                         },
@@ -5881,7 +5918,8 @@
                             },
                             "8tnXG": {
                               "content": "12. 黃小明",
-                              "x": 16
+                              "x": 16,
+                              "y": 8
                             }
                           }
                         }
@@ -5979,7 +6017,8 @@
                             },
                             "8tnXG": {
                               "content": "2. 張三",
-                              "x": 16
+                              "x": 16,
+                              "y": 8
                             }
                           }
                         },
@@ -5998,7 +6037,8 @@
                             },
                             "8tnXG": {
                               "content": "5. 趙五",
-                              "x": 16
+                              "x": 16,
+                              "y": 8
                             }
                           }
                         }
@@ -6281,6 +6321,344 @@
               "fontSize": 13,
               "fontWeight": "normal",
               "fontStyle": "italic"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "UWHfT",
+      "x": -2211,
+      "y": 564,
+      "name": "Worklog Editor Page",
+      "width": 1024,
+      "height": 768,
+      "fill": "$--background",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "dc6P2",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "$--primary",
+          "padding": [
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "Bx0oq",
+              "name": "title",
+              "fill": "$--primary-foreground",
+              "content": "工作日誌模板",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "EqtWM",
+          "name": "Main",
+          "width": "fill_container",
+          "height": "fill_container",
+          "children": [
+            {
+              "type": "frame",
+              "id": "bDoqx",
+              "name": "fileTree",
+              "width": 260,
+              "height": "fill_container",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "right": 1
+                },
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 4,
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "f4bzl",
+                  "name": "treeTitle",
+                  "fill": "$--muted-foreground",
+                  "content": "訓練工作日誌",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "rXo3U",
+                  "type": "ref",
+                  "ref": "jBcUh",
+                  "width": "fill_container",
+                  "name": "l1_1",
+                  "x": 12,
+                  "y": 33,
+                  "descendants": {
+                    "SxIMP": {
+                      "width": "fit_content"
+                    },
+                    "r6B2W": {
+                      "iconFontName": "folder"
+                    },
+                    "0Ru22": {
+                      "content": "梯間佈線"
+                    },
+                    "ttBco": {
+                      "x": 212
+                    },
+                    "VHWXO": {
+                      "iconFontName": "chevron-down"
+                    }
+                  }
+                },
+                {
+                  "id": "pJYVx",
+                  "type": "ref",
+                  "ref": "jBcUh",
+                  "width": "fill_container",
+                  "padding": [
+                    6,
+                    8,
+                    6,
+                    28
+                  ],
+                  "name": "l2_1",
+                  "x": 12,
+                  "y": 69,
+                  "descendants": {
+                    "SxIMP": {
+                      "width": "fit_content",
+                      "x": 28
+                    },
+                    "r6B2W": {
+                      "iconFontName": "file-text"
+                    },
+                    "0Ru22": {
+                      "content": "有放水版本"
+                    },
+                    "ttBco": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "5gAK6",
+                  "type": "ref",
+                  "ref": "jBcUh",
+                  "width": "fill_container",
+                  "padding": [
+                    6,
+                    8,
+                    6,
+                    28
+                  ],
+                  "name": "l2_2",
+                  "x": 12,
+                  "y": 105,
+                  "descendants": {
+                    "SxIMP": {
+                      "width": "fit_content",
+                      "x": 28
+                    },
+                    "r6B2W": {
+                      "iconFontName": "file-text"
+                    },
+                    "0Ru22": {
+                      "content": "無放水版本"
+                    },
+                    "ttBco": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "gZP0f",
+                  "type": "ref",
+                  "ref": "jBcUh",
+                  "width": "fill_container",
+                  "name": "l1_2",
+                  "x": 12,
+                  "y": 141,
+                  "descendants": {
+                    "SxIMP": {
+                      "width": "fit_content"
+                    },
+                    "r6B2W": {
+                      "iconFontName": "folder"
+                    },
+                    "0Ru22": {
+                      "content": "高樓救災"
+                    },
+                    "ttBco": {
+                      "x": 212
+                    },
+                    "VHWXO": {
+                      "iconFontName": "chevron-right"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "TSWkx",
+              "name": "editorArea",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 24,
+              "padding": 32,
+              "children": [
+                {
+                  "id": "TfEuz",
+                  "type": "ref",
+                  "ref": "BjRan",
+                  "width": "fill_container",
+                  "name": "f2",
+                  "height": "fill_container",
+                  "x": 32,
+                  "y": 32,
+                  "flipX": false,
+                  "flipY": false,
+                  "textGrowth": "auto",
+                  "descendants": {
+                    "uAcGD": {
+                      "width": "fill_container"
+                    },
+                    "a78kl": {
+                      "content": "處理情形",
+                      "width": "fill_container"
+                    },
+                    "pzw5I": {
+                      "height": "fill_container",
+                      "width": "fill_container",
+                      "flipX": false,
+                      "flipY": false,
+                      "x": 0,
+                      "y": 26,
+                      "textGrowth": "auto"
+                    },
+                    "S4qWY": {
+                      "content": "請輸入處理情形..."
+                    }
+                  }
+                },
+                {
+                  "id": "MSb8M",
+                  "type": "ref",
+                  "ref": "BjRan",
+                  "width": "fill_container",
+                  "name": "f3",
+                  "height": "fit_content",
+                  "x": 32,
+                  "y": 458,
+                  "descendants": {
+                    "uAcGD": {
+                      "width": "fill_container"
+                    },
+                    "a78kl": {
+                      "content": "備註",
+                      "width": "fill_container"
+                    },
+                    "pzw5I": {
+                      "height": 120,
+                      "width": "fill_container"
+                    },
+                    "S4qWY": {
+                      "content": "請輸入處理情形...",
+                      "textGrowth": "fixed-width",
+                      "width": 120,
+                      "height": 20,
+                      "flipX": false,
+                      "flipY": false,
+                      "x": 12,
+                      "y": 8
+                    }
+                  }
+                },
+                {
+                  "type": "frame",
+                  "id": "Cb3Jx",
+                  "name": "Draggable Components Box",
+                  "width": "fill_container",
+                  "fill": "$--muted",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "gap": 12,
+                  "padding": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Pk7bI",
+                      "name": "title",
+                      "fill": "$--muted-foreground",
+                      "content": "可用變數 (拖曳至上方欄位)：",
+                      "textAlignVertical": "middle",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "id": "37Xqi",
+                      "type": "ref",
+                      "ref": "UjXug",
+                      "name": "b1",
+                      "width": "fit_content",
+                      "x": 211,
+                      "y": 16,
+                      "descendants": {
+                        "zHpCv": {
+                          "content": "帶隊官"
+                        }
+                      }
+                    },
+                    {
+                      "id": "yUure",
+                      "type": "ref",
+                      "ref": "UjXug",
+                      "name": "b2",
+                      "width": "fit_content",
+                      "x": 276,
+                      "y": 16,
+                      "descendants": {
+                        "zHpCv": {
+                          "content": "隊員"
+                        }
+                      }
+                    },
+                    {
+                      "id": "pMQit",
+                      "type": "ref",
+                      "ref": "UjXug",
+                      "name": "b3",
+                      "width": "fit_content",
+                      "x": 329,
+                      "y": 16,
+                      "descendants": {
+                        "zHpCv": {
+                          "content": "總人數"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
