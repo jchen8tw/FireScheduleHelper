@@ -25,6 +25,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "options", "editor"],
+  "include": ["src", "options", "editor", "vitest.setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
