@@ -9,29 +9,21 @@
       // 1. 去除新值班系統彈窗警示功能
       if (items.enableRemoveDutyAlert) {
         const removeDutyAlerts = () => {
-          const m = document.getElementById('dutyAlertsModal');
+          const m = document.getElementById("dutyAlertsModal");
           if (m) m.remove();
-          document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
-          if (document.body.classList.contains('modal-open')) {
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = 'auto';
-            document.body.style.paddingRight = '';
+          document
+            .querySelectorAll(".modal-backdrop")
+            .forEach((b) => b.remove());
+          if (document.body.classList.contains("modal-open")) {
+            document.body.classList.remove("modal-open");
+            document.body.style.overflow = "auto";
+            document.body.style.paddingRight = "";
           }
 
-          // 透過 injection 執行在頁面環境中以存取 window 變數
-          const script = document.createElement('script');
-          script.textContent = `
-            if (window.dutyAlertsChecker) {
-              if (typeof window.dutyAlertsChecker.stopChecking === 'function') {
-                window.dutyAlertsChecker.stopChecking();
-              }
-              window.dutyAlertsChecker.showAlertsDialog = function() {
-                console.log('消防勤務易讀小幫手：彈窗已被攔截');
-              };
-            }
-          `;
-          (document.head || document.documentElement).appendChild(script);
-          script.remove();
+          // 觸發自訂事件，讓 MAIN world 的腳本攔截彈窗
+          window.dispatchEvent(
+            new CustomEvent("FireScheduleHelper_RemoveAlert"),
+          );
         };
 
         // 立即執行一次，並在接下來的 5 秒內每秒檢查一次（應對延遲載入）
@@ -42,11 +34,6 @@
           checks++;
           if (checks > 5) clearInterval(interval);
         }, 1000);
-      }
-
-      if (!items.enableReplace) {
-        console.log("消防勤務易讀小幫手：人名替換功能已停用。");
-        return;
       }
 
       // 2. 建立代號與姓名的對照表
@@ -72,7 +59,9 @@
               const cells = row.querySelectorAll("td");
               for (let i = 0; i < cells.length - 1; i++) {
                 const currentText = cells[i].innerText.trim();
-                const nextText = cells[i + 1] ? cells[i + 1].innerText.trim() : "";
+                const nextText = cells[i + 1]
+                  ? cells[i + 1].innerText.trim()
+                  : "";
 
                 // 修正 1：支援義消編號 (例如：義22) 或純數字編號
                 if (/^(義?\d+)$/.test(currentText) && nextText !== "") {
@@ -107,7 +96,7 @@
           if (sibling) {
             const idsText = sibling.innerText.trim();
             if (idsText) {
-              idsText.split(/[,，、\s]+/).forEach(id => {
+              idsText.split(/[,，、\s]+/).forEach((id) => {
                 const clean = id.trim();
                 if (clean && /^義?\d+$/.test(clean)) {
                   onDutyIds.push(clean);
@@ -121,9 +110,12 @@
 
       console.log("當日上班人員 (筆數: " + onDutyIds.length + "):", onDutyIds);
 
-      chrome.storage.local.set({ pendingIdToNameMap: idToNameMap, pendingOnDutyIds: onDutyIds }, () => {
-        console.log("人員名單與上班名單已儲存為待確認狀態...");
-      });
+      chrome.storage.local.set(
+        { pendingIdToNameMap: idToNameMap, pendingOnDutyIds: onDutyIds },
+        () => {
+          console.log("人員名單與上班名單已儲存為待確認狀態...");
+        },
+      );
 
       const nameSpanStyle = `
     display: inline-block;
@@ -242,6 +234,6 @@
       });
 
       console.log("替換完成！");
-    }
+    },
   );
 })();

@@ -6,15 +6,17 @@
   "content_scripts": [
     {
       "matches": ["*://ourap.tfd.gov.tw/*", "file:///*"],
+      "js": ["content_scripts/main_world.js"],
+      "world": "MAIN",
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://ourap.tfd.gov.tw/*", "file:///*"],
       "js": ["content_scripts/content.js"],
       "run_at": "document_idle"
     }
   ],
-  "permissions": [
-    "storage",
-    "scripting",
-    "activeTab"
-  ],
+  "permissions": ["storage", "scripting", "activeTab"],
   "action": {
     "default_popup": "options.html"
   },
